@@ -9,10 +9,10 @@
 #dataset.head()
 import numpy as np
 import pickle
-X = np.genfromtxt('data/mnist_train.csv', delimiter=',',skip_header=1).astype(np.dtype('uint8'))
-with open('data/train_points.p', 'wb') as f:
+X = np.genfromtxt('data/mnist_test.csv', delimiter=',',skip_header=1).astype(np.dtype('uint8'))
+with open('data/test_points.p', 'wb') as f:
     pickle.dump(X, f)
 ...
-with open('data/train_points.p', 'rb') as f:
+with open('data/test_points.p', 'rb') as f:
     X = pickle.load(f)
 
