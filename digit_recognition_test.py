@@ -3,7 +3,7 @@ import pickle
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import mode
-def I_turned_myself_into_a_pickle_morty(data,new_data_location)
+def I_turned_myself_into_a_pickle_morty(data,new_data_location):
     X = np.genfromtxt(data, delimiter=',').astype(np.dtype('uint8'))
     with open(new_data_location, 'wb') as f:
         pickle.dump(X, f)
@@ -35,9 +35,9 @@ def predict(x):
     nearest = trainlabels[np.argsort(distances)[:k]]
     return mode(nearest)[0][0]
 
-#K + Hauptkomponenten festlegen:
+#K + Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 59
-k=1000
+k=20
 hit = 0
 miss = 0
 
@@ -49,7 +49,7 @@ pca, trainvalues_pca = do_pca(number_of_pcs,trainvalues)
 
 
 
-for i in range(0,9999): #PCA helps a lot
+for i in range(0,10000): #PCA helps a lot
     sample = i
     predicted_value = predict(x=testvalues_pca[sample,:])
     labeled_value = testlabels[sample]
@@ -59,5 +59,5 @@ for i in range(0,9999): #PCA helps a lot
         miss +=1
 print(hit, 'vs',miss) #hit or miss, I guess they never miss huh
 
-#5390 vs 4609
+#5390 vs 4609 ->k=100 pc=59
 #run time: 5 minutes at least
