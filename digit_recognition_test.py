@@ -16,3 +16,4 @@ with open('data/train_points.p', 'wb') as f:
 with open('data/train_points.p', 'rb') as f:
     X = pickle.load(f)
 
+

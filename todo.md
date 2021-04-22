@@ -5,3 +5,8 @@
 - Project Proposal erstellen  
 - to do Liste eastern
 - Profit
+
+### Wednesday Questions
+
+- Notebooks or in .py file?
+- 
