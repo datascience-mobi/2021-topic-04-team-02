@@ -37,7 +37,7 @@ def predict(x):
 
 #K + Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
-k=122
+k=150
 hit = 0
 miss = 0
 
@@ -59,5 +59,5 @@ for i in range(0,10000): #PCA helps a lot
         miss +=1
 print(hit, 'vs',miss) #hit or miss, I guess they never miss huh
 
-#7851 vs 2149 ->k=105 pc=8
-#run time: 2 min
+#7865 vs 2135 ->k=150 pc=8
+#run time: 5 min
