@@ -37,7 +37,7 @@ def predict(x):
 
 #K + Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
-k=105
+k=122
 hit = 0
 miss = 0
 
