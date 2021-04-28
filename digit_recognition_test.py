@@ -10,7 +10,7 @@ def I_turned_myself_into_a_pickle_morty(data,new_data_location):
         pickle.dump(X, f)
 
 def do_pca(n_components, data): #does pca + data standardization I think?
-    X = StandardScaler().fit_transform(data)
+    X = StandardScaler().fit_transform(data) #
     pca = PCA(n_components)
     X_pca = pca.fit_transform(X)
     return pca, X_pca
@@ -30,7 +30,7 @@ def load_the_testing_pickle(pickleddata):
     testlabels = Y[:,0]
 def predict(x):
     differences = (trainvalues_pca - x)
-    distances = np.einsum('ij, ij->i', differences, differences)
+    distances = np.einsum('ij, ij->i', differences, differences) #
     nearest = trainlabels[np.argsort(distances)[:k]]
     return mode(nearest)[0][0]
 
