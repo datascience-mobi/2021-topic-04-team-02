@@ -3,13 +3,12 @@ import pickle
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import mode
+
 def I_turned_myself_into_a_pickle_morty(data,new_data_location):
     X = np.genfromtxt(data, delimiter=',').astype(np.dtype('uint8'))
     with open(new_data_location, 'wb') as f:
         pickle.dump(X, f)
-    ...
-    with open(new_data_location, 'rb') as f:
-        X = pickle.load(f)
+
 def do_pca(n_components, data): #does pca + data standardization I think?
     X = StandardScaler().fit_transform(data)
     pca = PCA(n_components)
