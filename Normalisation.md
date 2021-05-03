@@ -19,3 +19,4 @@ Other things to maybe do:
 - any NA? are all values between 0 and 255?
 - Images the right way up? -> how on earth do i check that ?!1?
 - are there duplicates? and does removing them interfere with the program?
+- are numbers correctly assigned?
