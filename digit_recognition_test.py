@@ -32,7 +32,7 @@ def predict(x):
     differences = (trainvalues_pca - x)
     distances = np.einsum('ij, ij->i', differences, differences) #
     nearest = trainlabels[np.argsort(distances)[:k]]
-    return mode(nearest)[0][0]
+    return mode(nearest)[0][0] #
 
 #K + Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
