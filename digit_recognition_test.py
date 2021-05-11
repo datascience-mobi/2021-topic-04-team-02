@@ -8,7 +8,6 @@ def I_turned_myself_into_a_pickle_morty(data,new_data_location):
     X = np.genfromtxt(data, delimiter=',').astype(np.dtype('uint8'))
     with open(new_data_location, 'wb') as f:
         pickle.dump(X, f)
-
 def do_pca(n_components, data): #does pca + data standardization I think?
     X = StandardScaler().fit_transform(data) #
     pca = PCA(n_components)
@@ -34,7 +33,7 @@ def predict(x):
     nearest = trainlabels[np.argsort(distances)[:k]]
     return mode(nearest)[0][0] #
 
-#K + Anzahl der Hauptkomponenten festlegen:
+#K und Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
 k=150
 hit = 0
