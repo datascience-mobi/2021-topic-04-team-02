@@ -1,8 +1,6 @@
 import numpy as np
 import pickle
-from PCA import PCA_func
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from functions.PCA import PCA_func
 from scipy.stats import mode
 
 def I_turned_myself_into_a_pickle_morty(data,new_data_location):
@@ -11,11 +9,6 @@ def I_turned_myself_into_a_pickle_morty(data,new_data_location):
         pickle.dump(X, f)
 
 
-def do_pca(n_components, data): #does pca + data standardization I think?
-    X = StandardScaler().fit_transform(data) #
-    pca = PCA(n_components)
-    X_pca = pca.fit_transform(X)
-    return pca, X_pca
 def load_the_training_pickle(pickleddata):
     with open(pickleddata, 'rb') as f:
         X = pickle.load(f)
@@ -37,8 +30,8 @@ def predict(x):
     return mode(nearest)[0][0] #
 
 #K und Anzahl der Hauptkomponenten festlegen:
-number_of_pcs = 49
-k=6
+number_of_pcs = 45
+k = 6
 hit = 0
 miss = 0
 
