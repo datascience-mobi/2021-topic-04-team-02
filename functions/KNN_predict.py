@@ -1,7 +1,7 @@
 import numpy as np
 
 def predict(trainvalues, X, k):
-
-    distance =
-
-    return mode(nearest)[0][0] #
+    for i in rainvalues[:,0]
+        distance = np.sqrt(np.sum(np.square(trainvalues[i,:]-X)))
+        distances = distances.append(distance)
+    return  distances
