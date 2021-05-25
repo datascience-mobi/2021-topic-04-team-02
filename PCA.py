@@ -10,3 +10,4 @@ X_scaled[:5]
 features = X_scaled.T
 cov_matrix = np.cov(features)
 cov_matrix[:5]
+kj
