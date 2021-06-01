@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.linalg import norm
 import pickle
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -32,7 +33,10 @@ def predict(x):
     distances = np.einsum('ij, ij->i', differences, differences) #
     nearest = trainlabels[np.argsort(distances)[:k]]
     return mode(nearest)[0][0] #
-
+def knn(trainvalues, trainlabels, X, k):
+    distances = norm(trainvalues-X, axis=1)
+    nearest = trainlabels[np.argsort(distances)[:k]]
+    return mode(nearest)
 #K und Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
 k=150
@@ -49,7 +53,7 @@ pca, trainvalues_pca = do_pca(number_of_pcs,trainvalues)
 
 for i in range(0,10000): #PCA helps a lot
     sample = i
-    predicted_value = predict(x=testvalues_pca[sample,:])
+    predicted_value = knn(trainvalues_pca, trainlabels, testvalues_pca[sample,:], k)
     labeled_value = testlabels[sample]
     if predicted_value == labeled_value:
         hit +=1
