@@ -1,9 +1,9 @@
 import numpy as np
-from numpy.linalg import norm
 import pickle
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from scipy.stats import mode
+from functions.KNN_predict import knn
+
 
 def I_turned_myself_into_a_pickle_morty(data,new_data_location):
     X = np.genfromtxt(data, delimiter=',').astype(np.dtype('uint8'))
@@ -28,15 +28,7 @@ def load_the_testing_pickle(pickleddata):
     testvalues = Y[:,1:]
     global testlabels
     testlabels = Y[:,0]
-def predict(x):
-    differences = (trainvalues_pca - x)
-    distances = np.einsum('ij, ij->i', differences, differences) #
-    nearest = trainlabels[np.argsort(distances)[:k]]
-    return mode(nearest)[0][0] #
-def knn(trainvalues, trainlabels, X, k):
-    distances = norm(trainvalues-X, axis=1)
-    nearest = trainlabels[np.argsort(distances)[:k]]
-    return mode(nearest)
+
 #K und Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 8
 k=150

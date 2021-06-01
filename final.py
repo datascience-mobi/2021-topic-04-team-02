@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 from functions.PCA import PCA_func
-from scipy.stats import mode
+from functions.KNN_predict import knn
 
 def I_turned_myself_into_a_pickle_morty(data,new_data_location):
     X = np.genfromtxt(data, delimiter=',').astype(np.dtype('uint8'))
@@ -23,11 +23,7 @@ def load_the_testing_pickle(pickleddata):
     testvalues = Y[:,1:]
     global testlabels
     testlabels = Y[:,0]
-def predict(x):
-    differences = (trainvalues_pca - x)
-    distances = np.einsum('ij, ij->i', differences, differences) #
-    nearest = trainlabels[np.argsort(distances)[:k]]
-    return mode(nearest)[0][0] #
+
 
 #K und Anzahl der Hauptkomponenten festlegen:
 number_of_pcs = 45
@@ -45,7 +41,7 @@ trainvalues_pca = PCA_func(trainvalues, number_of_pcs)
 
 for i in range(0,10000): #PCA helps a lot
     sample = i
-    predicted_value = predict(x=testvalues_pca[sample,:])
+    predicted_value = knn(trainvalues_pca, trainlabels, testvalues_pca[sample,:], k)
     labeled_value = testlabels[sample]
     if predicted_value == labeled_value:
         hit +=1
