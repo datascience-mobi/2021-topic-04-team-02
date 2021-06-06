@@ -16,6 +16,7 @@ def scale(X, min, max):
     # documentation: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html
     return X_scale
 
+
 def robust(X):
     rscaler = RobustScaler()
     X_rscale = rscaler.transform(X)
