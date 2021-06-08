@@ -34,14 +34,12 @@ miss = 0
 load_the_training_pickle('data/train_points.p')
 load_the_testing_pickle('data/test_points.p')
 
-testvalues_pca = PCA_func(testvalues, number_of_pcs)
-trainvalues_pca = PCA_func(trainvalues, number_of_pcs)
+trainvalues_pca, train_mean, train_evs = PCA_func(trainvalues, number_of_pcs)
+testvalues_pca, _, _ = PCA_func(testvalues, number_of_pcs, train_mean=train_mean, train_evs = train_evs)
 
-
-
-for i in range(0,10000): #PCA helps a lot
+for i in range(10000): #PCA helps a lot
     sample = i
-    predicted_value = knn(trainvalues_pca, trainlabels, testvalues_pca[sample,:], k)
+    predicted_value = knn(trainvalues_pca = trainvalues_pca, X=testvalues_pca[sample,:], trainlabels = trainlabels, k = k)
     labeled_value = testlabels[sample]
     if predicted_value == labeled_value:
         hit +=1
