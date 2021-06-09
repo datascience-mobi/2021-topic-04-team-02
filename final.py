@@ -47,5 +47,5 @@ for i in range(10000): #PCA helps a lot
         miss +=1
 print(hit, 'vs',miss) #hit or miss, I guess they never miss huh
 
-#7865 vs 2135 ->k=150 pc=8
+#9739 vs 261 ->k=6 pc=45
 #run time: 5 min
