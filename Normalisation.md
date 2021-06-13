@@ -20,4 +20,4 @@ Other things to maybe do:
 - any pure 0 images?
 - Images the right way up? -> how on earth do i check that ?!1?
 - are there duplicates? and does removing them interfere with the program?
-- are numbers correctly assigned?
+- are numbers correctly assigned? 
