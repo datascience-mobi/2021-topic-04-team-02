@@ -3,6 +3,8 @@ import pickle
 from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
 from functions.KNN_predict import knn
+from functions.Standardize import center
+from functions.Standardize import center_test_values
 
 # select number of principle components and k:
 number_of_pcs = 45
@@ -12,9 +14,12 @@ k = 6
 train_labels, train_values = load_the_pickle('data/train_points.p')
 test_labels, test_values = load_the_pickle('data/test_points.p')
 
-# PCA:
-train_values_pca, train_mean, train_evs = PCA_func(train_values, number_of_pcs)
-test_values_pca, _, _ = PCA_func(test_values, number_of_pcs, train_mean=train_mean, train_evs=train_evs)
+# standardization and PCA:
+train_values_centered, train_mean = center(train_values)
+train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
+
+test_values_centered, test_mean = center_test_values(test_values, train_values)
+test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, train_evs=train_evs)
 
 # kNN:
 hit = 0
