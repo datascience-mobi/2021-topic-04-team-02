@@ -27,7 +27,7 @@ miss = 0
 
 for i in range(10000):
     sample = i
-    predicted_value = knn(trainvalues_pca=train_values_pca, X=test_values_pca[sample, :], trainlabels=train_labels, k=k)
+    predicted_value = knn(trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
     labeled_value = test_labels[sample]
     if predicted_value == labeled_value:
         hit += 1
