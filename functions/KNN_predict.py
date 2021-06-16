@@ -42,4 +42,3 @@ def distances_euclidean_testing(trainvalues_pca, trainlabels, testvalues_pca,k):
     distances = np.sqrt(((trainvalues_pca[np.newaxis] - testvalues_pca[:, np.newaxis])**2).sum(axis=-1))  # calculates the euclidean distance between trainvalues and data point X
     nearest = trainlabels[np.argsort(distances)[:,:k]]  # extracting the k nearest neighbours from the trainlabels through sorting the distances
     return nearest
-
