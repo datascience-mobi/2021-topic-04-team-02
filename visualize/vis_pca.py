@@ -1,6 +1,6 @@
 # visualize pca data
-import plotly.express as px
 from final import *
+import plotly.express as px
 
 fig = px.scatter_3d(test_values_pca, x=0, y=1, z=2, color=test_labels)
 fig.update_traces(marker=dict(size=3))
