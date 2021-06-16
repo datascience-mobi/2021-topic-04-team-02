@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
-from functions.KNN_predict import knn
+from functions.KNN_predict import *
 from functions.Standardize import center
 from functions.Standardize import center_test_values
 
@@ -26,7 +26,7 @@ hit = 0
 miss = 0
 
 for sample in range(10000):
-    predicted_value = knn(trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
+    predicted_value = knn_euclidean(trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
     labeled_value = test_labels[sample]
     if predicted_value == labeled_value:
         hit += 1
