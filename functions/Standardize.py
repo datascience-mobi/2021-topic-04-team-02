@@ -31,6 +31,12 @@ def cov_columns(mat, mat2):
 
 
 def center(X, scale=False):
+    """
+
+    :param X: data point out of test set
+    :param scale:
+    :return: returns either covariance matrix or correlations matrix
+    """
     mean = np.mean(X, axis=0)
     X_mean = X - mean
     cov_mat = np.cov(X_mean, rowvar=0)
