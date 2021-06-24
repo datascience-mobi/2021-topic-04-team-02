@@ -25,13 +25,18 @@ test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, tra
 hit = 0
 miss = 0
 
+import multiprocessing
+
 for sample in range(10000):
-    predicted_value = knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
-    labeled_value = test_labels[sample]
-    if predicted_value == labeled_value:
-        hit += 1
-    else:
-        miss += 1
+    if __name__ == '__main__':
+        with multiprocessing.Pool(5) as p:
+            predicted_value = p.map(knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)], [sample])
+        #predicted_value = knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
+            labeled_value = test_labels[sample]
+            if predicted_value == labeled_value:
+                hit += 1
+            else:
+                miss += 1
 print(hit, 'vs', miss)
 
 # Results:
