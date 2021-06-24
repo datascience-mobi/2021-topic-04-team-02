@@ -23,8 +23,6 @@ test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, tra
 
 def knn_neu(x):
     return knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[x,:], trainlabels=train_labels, k=k)
-
-
 # kNN:
 hit = 0
 miss = 0
@@ -33,7 +31,7 @@ import multiprocessing
 
 l = list(range(10000))
 if __name__ == '__main__':
-    with multiprocessing.Pool(10) as p:
+    with multiprocessing.Pool(4) as p:
         result = p.map(knn_neu, range(10000))
     for sample in range(10000):
         if result[sample] == test_labels[sample]:
@@ -44,4 +42,4 @@ if __name__ == '__main__':
 
 # Results:
 # 9739 vs 261 ->k=6 pc=45
-# run time: 2:08 min -->5 Prozesse
+# run time: 2:08 min -->4 Prozesse
