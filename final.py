@@ -33,7 +33,7 @@ import multiprocessing
 
 l = list(range(10000))
 if __name__ == '__main__':
-    with multiprocessing.Pool(3) as p:
+    with multiprocessing.Pool(10) as p:
         result = p.map(knn_neu, range(10000))
     for sample in range(10000):
         if result[sample] == test_labels[sample]:
@@ -44,4 +44,4 @@ if __name__ == '__main__':
 
 # Results:
 # 9739 vs 261 ->k=6 pc=45
-# run time: 2:40 min
+# run time: 2:08 min -->5 Prozesse
