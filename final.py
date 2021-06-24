@@ -33,10 +33,15 @@ import multiprocessing
 
 l = list(range(10000))
 if __name__ == '__main__':
-    with multiprocessing.Pool(2) as p:
-        print(p.map(knn_neu, range(1000)))
-
+    with multiprocessing.Pool(3) as p:
+        result = p.map(knn_neu, range(10000))
+    for sample in range(10000):
+        if result[sample] == test_labels[sample]:
+            hit += 1
+        else:
+            miss +=1
+    print(hit, "vs", miss)
 
 # Results:
 # 9739 vs 261 ->k=6 pc=45
-# run time: 6:10 min
+# run time: 2:40 min
