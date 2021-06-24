@@ -21,23 +21,21 @@ train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number
 test_values_centered, test_mean = center_test_values(test_values, train_values)
 test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, train_evs=train_evs)
 
+def knn_neu(x):
+    return knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[x,:], trainlabels=train_labels, k=k)
+
+
 # kNN:
 hit = 0
 miss = 0
 
 import multiprocessing
 
-for sample in range(10000):
-    if __name__ == '__main__':
-        with multiprocessing.Pool(5) as p:
-            predicted_value = p.map(knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)], [sample])
-        #predicted_value = knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
-            labeled_value = test_labels[sample]
-            if predicted_value == labeled_value:
-                hit += 1
-            else:
-                miss += 1
-print(hit, 'vs', miss)
+l = list(range(10000))
+if __name__ == '__main__':
+    with multiprocessing.Pool(2) as p:
+        print(p.map(knn_neu, range(1000)))
+
 
 # Results:
 # 9739 vs 261 ->k=6 pc=45
