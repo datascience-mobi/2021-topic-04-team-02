@@ -24,6 +24,7 @@ def cov_columns(mat, mat2):
     # Which should we use here? n-1 or n? np.cov uses n-1
     cov_mat = np.zeros((x, x))
     for i in range(0, x):
+
         for j in range(0, x):
             cov_mat[i, j] = c * np.dot((mat[:, i] - np.mean(mat2[:, i])), (mat[:, j] - np.mean(mat2[:, j])))
 
