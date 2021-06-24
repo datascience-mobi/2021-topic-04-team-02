@@ -26,7 +26,7 @@ hit = 0
 miss = 0
 
 for sample in range(10000):
-    predicted_value = knn_euclidean(trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
+    predicted_value = knn(distance_method="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[sample,:], trainlabels=train_labels, k=k)
     labeled_value = test_labels[sample]
     if predicted_value == labeled_value:
         hit += 1
