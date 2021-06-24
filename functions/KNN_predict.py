@@ -33,15 +33,14 @@ def knn(distance_method, trainvalues_pca, trainlabels, X, k):
    :param k: variable k for the knn algorithm
    :return: returns the major vote of the k nearest neighbours based on used distance method distance
    """
-    if distance_method == "euclidean":
-        distances = euclidean_distance(trainvalues_pca, X)
-    elif distance_method == "manhattan":
-        distances = manhattan_distance(trainvalues_pca, X)
-    else:
-        print("Distance method not implemented, please use euclidean or manhattan!")
-
-    nearest = trainlabels[np.argsort(distances)[:k]] #extracting the k nearest neighbours from the trainlabels through sorting the distances
-    return mode(nearest)[0][0]
+   if distance_method == "euclidean":
+      distances = euclidean_distance(trainvalues_pca, X)
+   elif distance_method == "manhattan":
+      distances = manhattan_distance(trainvalues_pca, X)
+   else:
+      print("Distance method not implemented, please use euclidean or manhattan!")
+   nearest = trainlabels[np.argsort(distances)[:k]] #extracting the k nearest neighbours from the trainlabels through sorting the distances
+   return mode(nearest)[0][0]
 
 
 
