@@ -3,78 +3,70 @@ import numpy as np
 
 def cov_mod(m, n, rowvar=True):
     """
-    Estimate a covariance matrix, given data.
-    Covariance indicates the level to which two variables vary together.
-    If we examine N-dimensional samples, :math:`X = [x_1, x_2, ... x_N]^T`,
-    then the covariance matrix element :math:`C_{ij}` is the covariance of
-    :math:`x_i` and :math:`x_j`. The element :math:`C_{ii}` is the variance
-    of :math:`x_i`.
+    Gives the covariance matrix of m using the mean values of n.
+    Derived from np.cov.
     Parameters
     ----------
     m : array_like
         A 1-D or 2-D array containing multiple variables and observations.
         Each row of `m` represents a variable, and each column a single
-        observation of all those variables. Also see `rowvar` below.
+        observation of all those variables.
     n : array_like
         An array containing multiple variables and observations.
     rowvar : bool, optional
-        If `rowvar` is True (default), then each row represents a
-        variable, with observations in the columns. Otherwise, the relationship
-        is transposed: each column represents a variable, while the rows
-        contain observations.
+        If `rowvar` is True (default), then arrays transposed so each row represents a
+        variable, with observations in the columns. If false then not transposed.
     Returns
     -------
     out : ndarray
         The covariance matrix of the variables.
     """
-
+    # Data type: double for higher precision
     dtype = np.result_type(m, np.float64)
 
-    X = np.array(m, ndmin=2, dtype=dtype)
-    if not rowvar and X.shape[0] != 1:
+    # Transpose matrices so that entries of each variable (pixel position) are in rows instead of columns
+    X = np.array(m, dtype=dtype)
+    X2 = np.array(n, dtype=dtype)
+    if rowvar:
         X = X.T
-    if X.shape[0] == 0:
-        return np.array([]).reshape(0, 0)
-    dtype2 = np.result_type(n, np.float64)
-    X2 = np.array(n, ndmin=2, dtype=dtype2)
-    if not rowvar and X2.shape[0] != 1:
         X2 = X2.T
-    if X2.shape[0] == 0:
-        return np.array([]).reshape(0, 0)
 
-    # Averages to be subtracted taken from second (training) array
-    avg = np.average(X2, axis=1)
+    # Averages taken from second (training) array
+    avg = np.mean(X2, axis=1)
+    # unweighted, axis=1 means mean calculated over rows
 
     # N-1 calculated:
     N_1 = X.shape[1] - 1
 
     # Averages subtracted:
-    X -= avg[:, None]
+    X = X - avg[:, None]
+    # None adds another dimension so that subtraction is row-wise
 
-    # [...]
+    # Skalarprodukt
     X_T = X.T
-    c = np.dot(X, X_T.conj())
+    c = np.dot(X, X_T)
 
     # Multiplied by 1/(N-1)
-    c *= np.true_divide(1, N_1)
-    # output squeeze [...]
+    c = c * np.true_divide(1, N_1)
+    # Squeeze removes unnecessary dimensions
     return c.squeeze()
 
 
 def center(X, Y, scale=False):
     if Y == "None":
+        # there must be a nicer way to do this
         mean = np.mean(X, axis=0)
         Y = X
     else:
         mean = np.mean(Y, axis=0)
     X_mean = X - mean
-    cov_mat = cov_mod(X, Y, rowvar=False)
-    c_mat = cov_mat
+    c_mat = cov_mod(X, Y)
     if scale:
-        # WIP
-        corr_mat = np.corrcoef(X_mean, rowvar=False)
-        corr_mat[np.isnan(corr_mat)] = cov_mat[np.isnan(corr_mat)]
-        c_mat = corr_mat
+        d = np.diag(c_mat)
+        std_dev = np.sqrt(d)
+        c_mat = c_mat / std_dev[:, None]
+        c_mat = c_mat / std_dev[None, :]
+        # missing solution for NaN? 0?!
     return c_mat, X_mean
 
 
