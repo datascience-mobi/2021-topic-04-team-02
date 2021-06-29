@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import mode
+import multiprocessing
 
 def manhattan_distance(trainvalues_pca, X):
     """
@@ -23,26 +24,24 @@ def euclidean_distance(trainvalues_pca, X):
 
     return distances
 
-def knn(distance_method, trainvalues_pca, trainlabels, X, k):
-   """
+def knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
+    """
 
-   :param distance_method:
-   :param trainvalues_pca: array of training data
-   :param trainlabels: labels of the training data
-   :param X: tested data point
-   :param k: variable k for the knn algorithm
-   :return: returns the major vote of the k nearest neighbours based on used distance method distance
-   """
-   if distance_method == "euclidean":
-      distances = euclidean_distance(trainvalues_pca, X)
-   elif distance_method == "manhattan":
-      distances = manhattan_distance(trainvalues_pca, X)
-   else:
-      print("Distance method not implemented, please use euclidean or manhattan!")
-   nearest = trainlabels[np.argsort(distances)[:k]] #extracting the k nearest neighbours from the trainlabels through sorting the distances
-   return mode(nearest)[0][0]
-
-
+    :param distance_method:
+    :param trainvalues_pca: array of training data
+    :param trainlabels: labels of the training data
+    :param X: tested data point
+    :param k: variable k for the knn algorithm
+    :return: returns the major vote of the k nearest neighbours based on used distance method distance
+    """
+    if distance_method_as_string == "euclidean":
+        distances = euclidean_distance(trainvalues_pca, X)
+    elif distance_method_as_string == "manhattan":
+        distances = manhattan_distance(trainvalues_pca, X)
+    else:
+        print("Distance method not implemented, please use euclidean or manhattan!")
+    nearest = trainlabels[np.argsort(distances)[:k]] #extracting the k nearest neighbours from the trainlabels through sorting the distances
+    return mode(nearest)[0][0]
 
 def distances_euclidean_testing(trainvalues_pca, trainlabels, testvalues_pca,k):
     """
