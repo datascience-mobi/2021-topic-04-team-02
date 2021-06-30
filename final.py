@@ -31,7 +31,7 @@ import multiprocessing
 
 l = list(range(10000))
 if __name__ == '__main__':
-    with multiprocessing.Pool(4) as p:
+    with multiprocessing.Pool(10) as p:
         result = p.map(knn_multi, range(10000))
     for sample in range(10000):
         if result[sample] == test_labels[sample]:
