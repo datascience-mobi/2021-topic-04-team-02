@@ -42,6 +42,6 @@ if __name__ == '__main__':
 
 # Results:
 # 9739 vs 261 --> k=6 pc=45 --> euclidean
-# run time: 2:08 min -->4 Prozesse
+# run time: 113 Sekunden -->4 Prozesse
 # 9713 vs 287 --> k=6 pc=45 --> manhattan
-# run time: 2:40 min -->4 Prozesse
+# run time: 110 Sekunden -->4 Prozesse
