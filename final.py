@@ -4,7 +4,6 @@ from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
 from functions.KNN_predict import *
 from functions.Standardize import center
-from functions.Standardize import center_test_values
 
 # select number of principle components and k:
 number_of_pcs = 45

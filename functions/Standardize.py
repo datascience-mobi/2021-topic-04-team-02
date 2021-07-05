@@ -7,12 +7,11 @@ def cov_mod(m, n, rowvar=True):
     Derived from np.cov.
     Parameters
     ----------
-    m : array_like
-        A 1-D or 2-D array containing multiple variables and observations.
+    m : array
         Each row of `m` represents a variable, and each column a single
-        observation of all those variables.
-    n : array_like
-        An array containing multiple variables and observations.
+        observation of the variables.
+    n : array
+        Must have same number of variables as m.
     rowvar : bool, optional
         If `rowvar` is True (default), then arrays transposed so each row represents a
         variable, with observations in the columns. If false then not transposed.
@@ -53,6 +52,18 @@ def cov_mod(m, n, rowvar=True):
 
 
 def center(X, Y, scale=False):
+    """
+    Returns covariance matrix or correlation matrix of X. Mean and standard deviation of Y are used to center/ scale.
+    Parameters
+    -------
+    X: array
+        Array of data to be centered and scaled.
+    Y: array
+        If no array is given then X is standardized with own values (training data).
+        Test values are standardized using the mean and standard deviation of the training data.
+    scale: bool
+        If False (default) covariance matrix as output. If true then correlation matrix.
+    """
     if Y == "None":
         # there must be a nicer way to do this
         mean = np.mean(X, axis=0)
@@ -66,11 +77,15 @@ def center(X, Y, scale=False):
         std_dev = np.sqrt(d)
         c_mat = c_mat / std_dev[:, None]
         c_mat = c_mat / std_dev[None, :]
-        # missing solution for NaN? 0?!
+
+        c_mat = c_mat[~np.isnan(c_mat).all(axis=1), :]
+        c_mat = c_mat[:, ~np.isnan(c_mat).any(axis=0)]
+
+        X_mean = X_mean[:, ~np.any(X_mean == 0, axis=0)]
     return c_mat, X_mean
 
 
-# Sad, inefficient and unused code below:
+# Sad and unused code below:
 
 def corr_columns(mat):
     x = len(mat[0])
