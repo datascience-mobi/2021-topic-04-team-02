@@ -2,8 +2,13 @@ import numpy as np
 import pickle
 from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
-from functions.KNN_predict import *
+import functions.KNN_predict as knn
 from functions.Standardize import center
+import itertools as itertools
+import multiprocessing
+import random
+
+
 
 # select number of principle components and k:
 number_of_pcs = 45
@@ -20,18 +25,15 @@ train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number
 test_values_centered, test_mean = center(test_values, Y=train_values)
 test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, train_evs=train_evs)
 
-def knn_multi(x):
-    return knn(distance_method_as_string="euclidean",trainvalues_pca=train_values_pca, X=test_values_pca[x,:], trainlabels=train_labels, k=k)
 # kNN:
 hit = 0
 miss = 0
 
-import multiprocessing
 
 l = list(range(10000))
 if __name__ == '__main__':
-    with multiprocessing.Pool(10) as p:
-        result = p.map(knn_multi, range(10000))
+    with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
+        result = p.starmap(knn.weighted_knn, zip(itertools.repeat("euclidean"), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
     for sample in range(10000):
         if result[sample] == test_labels[sample]:
             hit += 1
@@ -41,6 +43,6 @@ if __name__ == '__main__':
 
 # Results:
 # 9739 vs 261 --> k=6 pc=45 --> euclidean
-# run time: 113 Sekunden -->4 Prozesse
+# run time: 99 Sekunden -->4 Prozesse
 # 9713 vs 287 --> k=6 pc=45 --> manhattan
-# run time: 110 Sekunden -->4 Prozesse
+# run time: 97 Sekunden -->4 Prozesse
