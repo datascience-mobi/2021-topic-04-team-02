@@ -51,7 +51,7 @@ def cov_mod(m, n, rowvar=True):
     return c.squeeze()
 
 
-def center(X, Y, scale=False):
+def center(X, Y = [], scale=False):
     """
     Returns covariance matrix or correlation matrix of X. Mean and standard deviation of Y are used to center/ scale.
     Parameters
@@ -64,8 +64,8 @@ def center(X, Y, scale=False):
     scale: bool
         If False (default) covariance matrix as output. If true then correlation matrix.
     """
-    if Y == "None":
-        # there must be a nicer way to do this
+    if Y == []:
+        # there must be a nicer way to do this --> found one :P
         mean = np.mean(X, axis=0)
         Y = X
     else:

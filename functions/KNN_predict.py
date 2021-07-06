@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import mode
+from scipy.spatial import KDTree
 
 
 def manhattan_distance(trainvalues_pca, X):
@@ -62,6 +63,19 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
     nearest = trainlabels[np.argsort(-weights)[:k]]
     return mode(nearest)[0][0]
 
+def kdtree_knn(X,k,trainlabels,kdtree):
+    """
+
+    :param trainvalues_pca:
+    :param testvalues_pca:
+    :param k:
+    :param tested_value_range:
+    :return:
+    """
+    tree = kdtree
+    dd, ii = tree.query(X, k=k)
+    nearest = trainlabels[ii]
+    return mode(nearest)[0][0]
 
 def distances_euclidean_testing(trainvalues_pca, trainlabels, testvalues_pca,k):
     """
