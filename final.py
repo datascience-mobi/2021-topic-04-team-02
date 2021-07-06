@@ -30,20 +30,11 @@ hit = 0
 miss = 0
 
 #tree = KDTree(train_values_pca)
-#if __name__ == '__main__':
-#    with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
-#        result = p.starmap(knn.kdtree_knn,zip(test_values_pca[range(10000),:],itertools.repeat(k),itertools.repeat(train_labels),itertools.repeat(tree)),chunksize=500)
-#        for sample in range(10000):
-#            if result[sample] == test_labels[sample]:
-#                hit += 1
-#            else:
-#                miss +=1
-#        print(hit, "vs", miss)
 
 if __name__ == '__main__':
     with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
         result = p.starmap(knn.weighted_knn, zip(itertools.repeat("euclidean"), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
-
+#        result = p.starmap(knn.kdtree_knn,zip(test_values_pca[range(10000),:],itertools.repeat(k),itertools.repeat(train_labels),itertools.repeat(tree)),chunksize=500)
         for sample in range(10000):
             if result[sample] == test_labels[sample]:
                 hit += 1

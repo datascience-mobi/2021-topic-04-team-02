@@ -27,7 +27,7 @@ def euclidean_distance(trainvalues_pca, X):
 def knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
     """
 
-    :param distance_method:
+    :param distance_method: euclidean or manhattan as a string
     :param trainvalues_pca: array of training data
     :param trainlabels: labels of the training data
     :param X: tested data point
@@ -46,12 +46,14 @@ def knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
 def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
     """
 
-    :param trainvalues_pca:
-    :param trainlabels:
-    :param X:
-    :param k:
+    :param distance_method_as_string: euclidean or manhattan as a string
+    :param trainvalues_pca: array of training data
+    :param trainlabels: labels of the training data
+    :param X: tested data point
+    :param k: variable k for the knn algorithm
     :return:
     """
+    #function is wrong --> needs to be corrected
     if distance_method_as_string == "euclidean":
         distances = euclidean_distance(trainvalues_pca, X)
     elif distance_method_as_string == "manhattan":
@@ -66,10 +68,10 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
 def kdtree_knn(X,k,trainlabels,kdtree):
     """
 
-    :param trainvalues_pca:
-    :param testvalues_pca:
-    :param k:
-    :param tested_value_range:
+    :param X: tested data point
+    :param k: variable k for the knn algorithm
+    :param trainlabels: labels of the training data
+    :param kdtree: pre calculated kd-tree
     :return:
     """
     tree = kdtree
