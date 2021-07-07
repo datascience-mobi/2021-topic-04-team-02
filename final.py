@@ -11,8 +11,8 @@ from scipy.stats import mode
 import random
 
 # select number of principle components and k:
-number_of_pcs = 45
-k = 6
+number_of_pcs = 55
+k = 7
 
 # loading data:
 train_labels, train_values = load_the_pickle('data/train_points.p')
@@ -44,8 +44,8 @@ if __name__ == '__main__':
 
 
 # Results:
-# 9739 vs 261 --> k=6 pc=45 --> euclidean
-# run time: 99 Sekunden -->4 Prozesse
+# 9765 vs 235 --> k=6 pc=45 --> euclidean
+# run time: 118 Sekunden -->4 Prozesse
 # 9713 vs 287 --> k=6 pc=45 --> manhattan
 # run time: 97 Sekunden -->4 Prozesse
 

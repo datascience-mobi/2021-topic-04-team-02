@@ -62,8 +62,9 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
         print("Distance method not implemented, please use euclidean or manhattan!")
     weights = 1.0 / distances
     weights /= weights.sum(axis=0)
-    nearest = trainlabels[np.argsort(-weights)[:k]]
-    return mode(nearest)[0][0]
+
+    placeholder = weights
+    return placeholder
 
 def kdtree_knn(X,k,trainlabels,kdtree):
     """
