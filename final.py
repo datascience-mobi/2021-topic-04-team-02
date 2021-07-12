@@ -15,8 +15,8 @@ number_of_pcs = 55
 k = 7
 
 # loading data:
-train_labels, train_values = load_the_pickle('data/train_points.p')
-test_labels, test_values = load_the_pickle('data/test_points.p')
+train_labels, train_values = load_the_pickle('data/f_train_points.p')
+test_labels, test_values = load_the_pickle('data/f_test_points.p')
 
 # standardization and PCA:
 train_values_centered, train_mean = center(train_values)
@@ -32,8 +32,8 @@ miss = 0
 #tree = KDTree(train_values_pca)
 
 if __name__ == '__main__':
-    with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
-        result = p.starmap(knn.weighted_knn, zip(itertools.repeat("euclidean"), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
+    with multiprocessing.Pool(1) as p:
+        result = p.starmap(knn.knn, zip(itertools.repeat("euclidean"), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
 #        result = p.starmap(knn.kdtree_knn,zip(test_values_pca[range(10000),:],itertools.repeat(k),itertools.repeat(train_labels),itertools.repeat(tree)),chunksize=500)
         for sample in range(10000):
             if result[sample] == test_labels[sample]:
