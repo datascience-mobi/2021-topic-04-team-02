@@ -11,8 +11,6 @@ from scipy.spatial import KDTree
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-from matplotlib import cm
-
 def knntest(traindataloaction,testdatalocation,kmin,kmax,pca_min,pca_max,new_data_location):
     """
 
