@@ -3,22 +3,13 @@ import numpy as np
 
 def cov_mod(m, n, rowvar=True):
     """
-    Gives the covariance matrix of m using the mean values of n.
-    Derived from np.cov.
-    Parameters
-    ----------
-    m : array
-        Each row of `m` represents a variable, and each column a single
-        observation of the variables.
-    n : array
-        Must have same number of variables as m.
-    rowvar : bool, optional
-        If `rowvar` is True (default), then arrays transposed so each row represents a
-        variable, with observations in the columns. If false then not transposed.
-    Returns
-    -------
-    out : ndarray
-        The covariance matrix of the variables.
+
+    :param m: Array where each row of `m` represents a variable, and each column a single
+        observation.
+    :param n: Array with same number of variables as m.
+    :param rowvar: If True, then arrays transposed so each row represents a
+        variable, with observations in the columns.
+    :return: Gives the covariance matrix of m using the mean values of n.
     """
     # Data type: double for higher precision
     dtype = np.result_type(m, np.float64)
@@ -41,7 +32,7 @@ def cov_mod(m, n, rowvar=True):
     X = X - avg[:, None]
     # None adds another dimension so that subtraction is row-wise
 
-    # Skalarprodukt
+    # Scalar product
     X_T = X.T
     c = np.dot(X, X_T)
 
@@ -53,19 +44,13 @@ def cov_mod(m, n, rowvar=True):
 
 def center(X, Y = [], scale=False):
     """
-    Returns covariance matrix or correlation matrix of X. Mean and standard deviation of Y are used to center/ scale.
-    Parameters
-    -------
-    X: array
-        Array of data to be centered and scaled.
-    Y: array
-        If no array is given then X is standardized with own values (training data).
-        Test values are standardized using the mean and standard deviation of the training data.
-    scale: bool
-        If False (default) covariance matrix as output. If true then correlation matrix.
+
+    :param X: Array of data to be centered and scaled
+    :param Y: Array with which X is standardized
+    :param scale: If False (default) covariance matrix as output. If True then correlation matrix.
+    :return: Covariance matrix or correlation matrix of X. And centered matrix: X-mean.
     """
     if Y == []:
-        # there must be a nicer way to do this --> found one :P
         mean = np.mean(X, axis=0)
         Y = X
     else:
@@ -73,64 +58,23 @@ def center(X, Y = [], scale=False):
     X_mean = X - mean
     c_mat = cov_mod(X, Y)
     if scale:
+        # correlation matrix calculated:
+        # diagonal entries of covariance matrix are the variance
         d = np.diag(c_mat)
+        # square root gives the standard deviation
         std_dev = np.sqrt(d)
-        c_mat = c_mat / std_dev[:, None]
-        c_mat = c_mat / std_dev[None, :]
 
+        # ignore error message of dividing zero by zero
+        with np.errstate(divide='ignore', invalid='ignore'):
+            # row-wise then column-wise division by standard deviation
+            c_mat = c_mat / std_dev[:, None]
+            c_mat = c_mat / std_dev[None, :]
+
+        # Columns with only missing values amputated
         c_mat = c_mat[~np.isnan(c_mat).all(axis=1), :]
+        # Because matrix is symmetric corresponding rows also removed
         c_mat = c_mat[:, ~np.isnan(c_mat).any(axis=0)]
-
+        # Amputated variables also removed from X-mean matrix
         X_mean = X_mean[:, ~np.any(X_mean == 0, axis=0)]
     return c_mat, X_mean
 
-
-# Sad and unused code below:
-
-def corr_columns(mat):
-    x = len(mat[0])
-    c = (1 / x)
-    cor_mat = np.zeros((x, x))
-    for i in range(0, x):
-        for j in range(0, x):
-            cor_mat[i, j] = c * np.dot(((mat[:, i] - np.mean(mat[:, i])) / np.std(mat[:, i])),
-                                       ((mat[:, j] - np.mean(mat[:, j])) / np.std(mat[:, j])))
-
-    return cor_mat
-
-
-def cov_columns(mat, mat2):
-    """
-    calculates the covariance matrix
-    :param mat: Test data or training data
-    :param mat2: Training data
-    """
-    x = len(mat2[0])
-    c = (1 / (x - 1))
-    # Which should we use here? n-1 or n? np.cov uses n-1
-    cov_mat = np.zeros((x, x))
-    for i in range(0, x):
-
-        for j in range(0, x):
-            cov_mat[i, j] = c * np.dot((mat[:, i] - np.mean(mat2[:, i])), (mat[:, j] - np.mean(mat2[:, j])))
-
-    return cov_mat
-
-
-def center_test_values(X, Y, scale=False):
-    mean = np.mean(Y, axis=0)
-    X_mean = X - mean
-    cov_mat = np.cov(X_mean, rowvar=False)
-    # cov_mat = cov_columns(X_mean, Y)
-    c_mat = cov_mat
-    if scale:
-        x = len(Y[0])
-        c = (1/x)
-        corr_mat = np.zeros((x, x))
-        for i in range(0, x):
-            for j in range(0, x):
-                corr_mat[i, j] = c * np.dot(((X[:, i] - np.mean(Y[:, i])) / np.std(Y[:, i])),
-                                            ((X[:, j] - np.mean(Y[:, j])) / np.std(Y[:, j])))
-        corr_mat[np.isnan(corr_mat)] = cov_mat[np.isnan(corr_mat)]
-        c_mat = corr_mat
-    return c_mat, X_mean

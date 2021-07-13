@@ -18,7 +18,7 @@ def demo(n, scale):
     test_labels, test_values = load_the_pickle('data/test_points.p')
 
     # standardization and PCA:
-    train_values_centered, train_mean = center(train_values, Y="None", scale=scale)
+    train_values_centered, train_mean = center(train_values, scale=scale)
     train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
 
     test_values_centered, test_mean = center(test_values, Y=train_values, scale=scale)
