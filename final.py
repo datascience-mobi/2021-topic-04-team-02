@@ -1,5 +1,4 @@
-import numpy as np
-import pickle
+
 from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
 import functions.KNN_predict as knn
@@ -7,12 +6,8 @@ from functions.Standardize import center
 import itertools as itertools
 import multiprocessing
 from scipy.spatial import KDTree
-from scipy.stats import mode
-import random
-def main(train_data_location,test_data_location,k,n_pca,knn_method, distance_method = "euclidean"):
-    # select number of principle components and k:
-    number_of_pcs = n_pca
-    k = k
+
+def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, distance_method = "euclidean"):
 
     # loading data:
     train_labels, train_values = load_the_pickle(train_data_location)
@@ -33,8 +28,8 @@ def main(train_data_location,test_data_location,k,n_pca,knn_method, distance_met
 
     if __name__ == '__main__':
         with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
-            if knn_method == "kdtree" and distance_method == "euclidean":
-                result = p.starmap(knn.kdtree_knn, zip(test_values_pca[range(10000), :], itertools.repeat(k),itertools.repeat(train_labels), itertools.repeat(tree)),chunksize=500)
+            if knn_method == "kdtree":
+                result = p.starmap(knn.kdtree_knn, zip(test_values_pca[range(10000), :], itertools.repeat(k),itertools.repeat(train_labels), itertools.repeat(tree), itertools.repeat(distance_method)),chunksize=500)
             elif knn_method == "traditional":
                 result = p.starmap(knn.knn, zip(itertools.repeat(distance_method), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
 
@@ -46,11 +41,7 @@ def main(train_data_location,test_data_location,k,n_pca,knn_method, distance_met
             print(hit, "vs", miss)
 
 
-main("data/train_points.p","data/test_points.p",7,55,"traditional")
+main("data/train_points.p","data/test_points.p",7,55,"kdtree")
 
-# Results:
-# 9765 vs 235 --> k=6 pc=45 --> euclidean
-# run time: 118 Sekunden -->4 Prozesse
-# 9713 vs 287 --> k=6 pc=45 --> manhattan
-# run time: 97 Sekunden -->4 Prozesse
+
 
