@@ -23,7 +23,7 @@ def cov_mod(m, n, rowvar=True):
 
     # Averages taken from second (training) array
     avg = np.mean(X2, axis=1)
-    # unweighted, axis=1 means mean calculated over rows
+    # axis=1 means mean calculated over rows
 
     # N-1 calculated:
     N_1 = X.shape[1] - 1
@@ -38,11 +38,11 @@ def cov_mod(m, n, rowvar=True):
 
     # Multiplied by 1/(N-1)
     c = c * np.true_divide(1, N_1)
-    # Squeeze removes unnecessary dimensions
+    # Squeeze removes unnecessary dimensions created by None
     return c.squeeze()
 
 
-def center(X, Y = [], scale=False):
+def center(X, Y: np.ndarray = None, scale=False):
     """
 
     :param X: Array of data to be centered and scaled
@@ -50,7 +50,7 @@ def center(X, Y = [], scale=False):
     :param scale: If False (default) covariance matrix as output. If True then correlation matrix.
     :return: Covariance matrix or correlation matrix of X. And centered matrix: X-mean.
     """
-    if Y == []:
+    if Y is None:
         mean = np.mean(X, axis=0)
         Y = X
     else:
