@@ -9,39 +9,44 @@ import multiprocessing
 from scipy.spatial import KDTree
 from scipy.stats import mode
 import random
+def main(train_data_location,test_data_location,k,n_pca,knn_method, distance_method = "euclidean"):
+    # select number of principle components and k:
+    number_of_pcs = n_pca
+    k = k
 
-# select number of principle components and k:
-number_of_pcs = 55
-k = 7
+    # loading data:
+    train_labels, train_values = load_the_pickle(train_data_location)
+    test_labels, test_values = load_the_pickle(test_data_location)
 
-# loading data:
-train_labels, train_values = load_the_pickle('data/train_points.p')
-test_labels, test_values = load_the_pickle('data/test_points.p')
+    # standardization and PCA:
+    train_values_centered, train_mean = center(train_values)
+    train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
 
-# standardization and PCA:
-train_values_centered, train_mean = center(train_values)
-train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
+    test_values_centered, test_mean = center(test_values, Y=train_values)
+    test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, train_evs=train_evs)
 
-test_values_centered, test_mean = center(test_values, Y=train_values)
-test_values_pca, _ = PCA_func(test_values_centered,test_mean, number_of_pcs, train_evs=train_evs)
+    # kNN:
+    hit = 0
+    miss = 0
+    if knn_method == "kdtree":
+        tree = KDTree(train_values_pca)
 
-# kNN:
-hit = 0
-miss = 0
+    if __name__ == '__main__':
+        with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
+            if knn_method == "kdtree" and distance_method == "euclidean":
+                result = p.starmap(knn.kdtree_knn, zip(test_values_pca[range(10000), :], itertools.repeat(k),itertools.repeat(train_labels), itertools.repeat(tree)),chunksize=500)
+            elif knn_method == "traditional":
+                result = p.starmap(knn.knn, zip(itertools.repeat(distance_method), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
 
-#tree = KDTree(train_values_pca)
+            for sample in range(10000):
+                if result[sample] == test_labels[sample]:
+                    hit += 1
+                else:
+                    miss +=1
+            print(hit, "vs", miss)
 
-if __name__ == '__main__':
-    with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
-#        result = p.starmap(knn.weighted_knn, zip(itertools.repeat("euclidean"), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
-        result = p.starmap(knn.kdtree_knn,zip(test_values_pca[range(10000),:],itertools.repeat(k),itertools.repeat(train_labels),itertools.repeat(tree)),chunksize=500)
-        for sample in range(10000):
-            if result[sample] == test_labels[sample]:
-                hit += 1
-            else:
-                miss +=1
-        print(hit, "vs", miss)
 
+main("data/train_points.p","data/test_points.p",7,55,"traditional")
 
 # Results:
 # 9765 vs 235 --> k=6 pc=45 --> euclidean
