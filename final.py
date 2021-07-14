@@ -30,9 +30,10 @@ def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, dist
         with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
             if knn_method == "kdtree":
                 result = p.starmap(knn.kdtree_knn, zip(test_values_pca[range(10000), :], itertools.repeat(k),itertools.repeat(train_labels), itertools.repeat(tree), itertools.repeat(distance_method)),chunksize=500)
-            elif knn_method == "traditional":
+            elif knn_method == "weighted_knn":
                 result = p.starmap(knn.weighted_knn, zip(itertools.repeat(distance_method), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
-
+            elif knn_method == "traditional":
+                result = p.starmap(knn.knn, zip(itertools.repeat(distance_method), itertools.repeat(train_values_pca),itertools.repeat(train_labels),test_values_pca[range(10000),:],itertools.repeat(k)),chunksize=500)
             for sample in range(10000):
                 if result[sample] == test_labels[sample]:
                     hit += 1
@@ -41,7 +42,7 @@ def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, dist
             print(hit, "vs", miss)
 
 
-main("data/train_points.p","data/test_points.p",7,55,"traditional")
+main("data/f_train_points.p","data/f_test_points.p",8,77,"weighted_knn")
 
 
 

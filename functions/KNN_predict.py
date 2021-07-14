@@ -1,27 +1,26 @@
 import numpy as np
 from scipy.stats import mode
-from scipy.spatial import KDTree
 
 
-def manhattan_distance(trainvalues_pca, X):
+def manhattan_distance(trainvalues_pca, x):
     """
 
     :param trainvalues_pca: array of training data
-    :param X: tested data point
+    :param x: tested data point
     :return: returns manhattan distance
     """
-    distances = np.abs(trainvalues_pca - X).sum(-1)
+    distances = np.abs(trainvalues_pca - x).sum(-1)
     return distances
 
 
-def euclidean_distance(trainvalues_pca, X):
+def euclidean_distance(trainvalues_pca, x):
     """
 
     :param trainvalues_pca: array of training data
     :param X: tested data point
     :return: returns euclidean distance
     """
-    distances = np.linalg.norm(trainvalues_pca - X, axis=1)
+    distances = np.linalg.norm(trainvalues_pca - x, axis=1)
     return distances
 
 def knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
@@ -39,7 +38,7 @@ def knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
     elif distance_method_as_string == "manhattan":
         distances = manhattan_distance(trainvalues_pca, X)
     else:
-        print("Distance method not implemented, please use euclidean or manhattan!")
+        raise ValueError("Distance method not implemented, please use euclidean or manhattan!")
     nearest = trainlabels[np.argsort(distances)[:k]] #extracting the k nearest neighbours from the trainlabels through sorting the distances
     return mode(nearest)[0][0]
 
@@ -59,9 +58,10 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
     elif distance_method_as_string == "manhattan":
         distances = manhattan_distance(trainvalues_pca, X)
     else:
-        print("Distance method not implemented, please use euclidean or manhattan!")
+        raise ValueError("Distance method not implemented, please use euclidean or manhattan!")
     weights = 1.0 / distances**2
     weights /= weights.sum(axis=0)
+
     nearestweights = weights[np.argsort(distances)[:k]]
     nearest = trainlabels[np.argsort(distances)[:k]]
 
@@ -77,6 +77,7 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, X, k):
 
     return nearest_trainlabel
 
+
 def kdtree_knn(X,k,trainlabels,kdtree,distance_method):
     """
 
@@ -91,11 +92,12 @@ def kdtree_knn(X,k,trainlabels,kdtree,distance_method):
     elif distance_method == "manhattan":
         p = 1
     else:
-        print("Distance method not implemented, please use euclidean or manhattan!")
+        raise ValueError("Distance method not implemented, please use euclidean or manhattan!")
     tree = kdtree
-    dd, ii = tree.query(X, k=k,p=p)
+    dd, ii = tree.query(X, k=k, p=p)
     nearest = trainlabels[ii]
     return mode(nearest)[0][0]
+
 
 def distances_euclidean_testing(trainvalues_pca, trainlabels, testvalues_pca,k):
     """
