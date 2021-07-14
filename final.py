@@ -42,7 +42,7 @@ def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, dist
             print(hit, "vs", miss)
 
 
-main("data/f_train_points.p","data/f_test_points.p",8,77,"weighted_knn")
+main("data/train_points.p","data/test_points.p",4,51,"weighted_knn")
 
 
 

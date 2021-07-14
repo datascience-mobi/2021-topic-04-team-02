@@ -70,8 +70,8 @@ def knn_heatmap(datalocation,dropped_rows,dropped_columns):
     Y = numpy.array(mydata[:, 0])
     Z = numpy.array(mydata[:, 2]) / 10000
     df = pd.DataFrame.from_dict(numpy.array([X, Y, Z]).T)
-    df.columns = ["knn", "k_PCA", "Accuracy"]
-    pivotted = df.pivot("knn", "n_PCA", "Accuracy")
+    df.columns = ["k observed neighbours", "number of principle components", "Accuracy"]
+    pivotted = df.pivot("k observed neighbours", "number of principle components", "Accuracy")
     pivotted = pd.DataFrame.drop(pivotted, index=dropped_rows, columns=dropped_columns)
 
     return seaborn.heatmap(pivotted)
@@ -89,10 +89,11 @@ def knn_3dplot(datalocation):
     Z = mydata[:, 2]
 
     fig = plt.figure()
-    ax = Axes3D(fig)
+    ax = Axes3D(fig,auto_add_to_figure=False)
+    fig.add_axes(ax)
     ax.plot_trisurf(X, Y, Z,cmap="jet", linewidth=0.1)
-    ax.set_xlabel("knn")
-    ax.set_ylabel("n_PCA")
+    ax.set_xlabel("k observed neighbours")
+    ax.set_ylabel("number of principle components")
     ax.set_zlabel("number of hits")
     ax.set_title("Accuracy plot")
     fig = plt.show()

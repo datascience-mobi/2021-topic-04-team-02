@@ -3,7 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
-from functions.KNN_predict import knn
+import functions.KNN_predict as knn
 from functions.Standardize import center
 
 
@@ -45,8 +45,8 @@ def call_me_maybe(images, x=12):
     """
     phone_number = np.zeros(x, dtype=int)
     # number pcs and k
-    number_of_pcs = 45
-    k = 6
+    number_of_pcs = 51
+    k = 4
 
     # loading data:
     train_labels, train_values = load_the_pickle('data/train_points.p')
@@ -60,8 +60,7 @@ def call_me_maybe(images, x=12):
     test_values_pca, _ = PCA_func(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
 
     for i in range(0, x):
-        predicted_value = knn("euclidean", trainvalues_pca=train_values_pca, X=test_values_pca[i, :],
-                              trainlabels=train_labels, k=k)
+        predicted_value = knn.weighted_knn("euclidean", trainvalues_pca=train_values_pca, X=test_values_pca[i, :], trainlabels=train_labels, k=k)
         phone_number[i] = predicted_value
     return phone_number
 

@@ -68,5 +68,5 @@ def compare_stan(n, ztransform):
     return missed_number, hit, miss
 
 
-false_assignments_centered, hit_centered, miss_centered = compare_stan(10000, ztransform=False)
-false_assignments_z_transformed, hit_z, miss_z = compare_stan(10000, ztransform=True)
+#false_assignments_centered, hit_centered, miss_centered = compare_stan(10000, ztransform=False)
+#false_assignments_z_transformed, hit_z, miss_z = compare_stan(10000, ztransform=True)
