@@ -26,8 +26,8 @@ def euclidean_distance(trainvalues_pca, x):
 def voting_function(nearest_neighbours_labels):
     """
 
-    :param nearest_neighbours_labels:
-    :return:
+    :param nearest_neighbours_labels: list of labels of the nearest neighbours
+    :return: major vote of the labels in the given list
     """
     counter_list_2 = []
     for value in np.unique(nearest_neighbours_labels):
@@ -49,7 +49,7 @@ def knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
     :param trainlabels: labels of the training data
     :param x: tested data point
     :param k: variable k for the knn algorithm
-    :return: returns the major vote of the k nearest neighbours based on used distance method distance
+    :return: returns the major vote of the k nearest neighbours based on the used distance method distance
     """
     if distance_method_as_string == "euclidean":
         distances = euclidean_distance(trainvalues_pca, x)
@@ -70,7 +70,7 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
     :param trainlabels: labels of the training data
     :param x: tested data point
     :param k: variable k for the knn algorithm
-    :return:
+    :return: returns the major vote of the k nearest neighbours using inverse distance weighting
     """
     if distance_method_as_string == "euclidean":
         distances = euclidean_distance(trainvalues_pca, x)
@@ -104,8 +104,8 @@ def kdtree_knn(x, k, trainlabels, kdtree, distance_method):
     :param k: variable k for the knn algorithm
     :param trainlabels: labels of the training data
     :param kdtree: pre calculated kd-tree
-    :param distance_method:
-    :return:
+    :param distance_method: euclidean or manhattan as a string
+    :return: returns the major vote of the k nearest neighbours based on the used distance method distance
     """
     if distance_method == "euclidean":
         p = 2
