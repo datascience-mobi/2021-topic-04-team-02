@@ -5,6 +5,7 @@ from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
 import functions.KNN_predict as knn
 from functions.Standardize import center
+from functions.Standardize import standardize
 
 
 def form_filled_in(location_of_form):
@@ -51,6 +52,10 @@ def call_me_maybe(images, x=12):
     # loading data:
     train_labels, train_values = load_the_pickle('data/train_points.p')
     test_values = images
+
+    # standardization:
+    train_values = standardize(train_values)
+    test_values = standardize(test_values)
 
     # standardization and PCA:
     train_values_centered, train_mean = center(train_values)
