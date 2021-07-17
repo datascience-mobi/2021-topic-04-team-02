@@ -3,9 +3,11 @@ from functions.Load_data import load_the_pickle
 from functions.PCA import PCA_func
 import functions.KNN_predict as knn
 from functions.Standardize import center
+from functions.Standardize import standardize
 import itertools as itertools
 import multiprocessing
 from scipy.spatial import KDTree
+
 
 def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, distance_method = "euclidean"):
 
@@ -14,6 +16,9 @@ def main(train_data_location,test_data_location,k,number_of_pcs,knn_method, dist
     test_labels, test_values = load_the_pickle(test_data_location)
 
     # standardization and PCA:
+    train_values = standardize(train_values)
+    test_values = standardize(test_values)
+
     train_values_centered, train_mean = center(train_values)
     train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
 

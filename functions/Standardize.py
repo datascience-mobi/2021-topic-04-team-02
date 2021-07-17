@@ -1,6 +1,23 @@
 import numpy as np
 
 
+def standardize(data, z=True):
+    """
+
+    :param data: array of data
+    :param z:
+    :return: row wise aka image wise z transformation
+    """
+    # Calculate mean of each image
+    mean = np.mean(data, axis=1)
+
+    # Subtract mean from each pixel in image and divide by image standard deviation
+    data_mod = data.T - mean
+    if z:
+        data_mod = data_mod / np.std(data, axis=1)
+    return data_mod.T
+
+
 def cov_mod(m, n, rowvar=True):
     """
 
