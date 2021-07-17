@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.stats import mode
 
 
 def manhattan_distance(trainvalues_pca, x):
@@ -24,6 +23,24 @@ def euclidean_distance(trainvalues_pca, x):
     return distances
 
 
+def voting_function(nearest_neighbours_labels):
+    """
+
+    :param nearest_neighbours_labels:
+    :return:
+    """
+    counter_list_2 = []
+    for value in np.unique(nearest_neighbours_labels):
+        counter_list = []
+        for i, number in enumerate(nearest_neighbours_labels):
+            if number == value:
+                counter_list.append(1)
+        counter_list_2.append(np.sum(counter_list))
+    index_maximum_value = np.argmax(counter_list_2)
+    best_label = np.unique(nearest_neighbours_labels)[index_maximum_value]
+    return best_label
+
+
 def knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
     """
 
@@ -41,7 +58,8 @@ def knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
     else:
         raise ValueError("Distance method not implemented, please use euclidean or manhattan!")
     nearest = trainlabels[np.argsort(distances)[:k]]
-    return mode(nearest)[0][0]
+
+    return voting_function(nearest)
 
 
 def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
@@ -74,9 +92,9 @@ def weighted_knn(distance_method_as_string, trainvalues_pca, trainlabels, x, k):
                 weight_list.append(nearestweights[i])
         weight_list_2.append(np.sum(weight_list))
     index_maximum_value = np.argmax(weight_list_2)
-    nearest_trainlabel = np.unique(nearest)[index_maximum_value]
+    best_label = np.unique(nearest)[index_maximum_value]
 
-    return nearest_trainlabel
+    return best_label
 
 
 def kdtree_knn(x, k, trainlabels, kdtree, distance_method):
@@ -98,7 +116,8 @@ def kdtree_knn(x, k, trainlabels, kdtree, distance_method):
     tree = kdtree
     dd, ii = tree.query(x, k=k, p=p)
     nearest = trainlabels[ii]
-    return mode(nearest)[0][0]
+
+    return voting_function(nearest)
 
 
 def distances_euclidean_testing(trainvalues_pca, trainlabels, testvalues_pca, k):
