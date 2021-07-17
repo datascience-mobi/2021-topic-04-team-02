@@ -65,7 +65,7 @@ def call_me_maybe(images, x=12):
     test_values_pca, _ = PCA_func(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
 
     for i in range(0, x):
-        predicted_value = knn.weighted_knn("euclidean", trainvalues_pca=train_values_pca, X=test_values_pca[i, :], trainlabels=train_labels, k=k)
+        predicted_value = knn.weighted_knn("euclidean", trainvalues_pca=train_values_pca, x=test_values_pca[i, :], trainlabels=train_labels, k=k)
         phone_number[i] = predicted_value
     return phone_number
 
