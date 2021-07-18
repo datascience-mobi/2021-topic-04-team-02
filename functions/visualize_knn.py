@@ -24,8 +24,12 @@ def knn_npca_test(traindataloaction, testdatalocation, kmin, kmax, pca_min, pca_
     :param new_data_location:
     :return:
     """
+
+
     train_labels, train_values = load_the_pickle(traindataloaction)
     test_labels, test_values = load_the_pickle(testdatalocation)
+    train_values = standardize(train_values)
+    test_values = standardize(test_values)
     train_values_centered, train_mean = center(train_values)
     test_values_centered, test_mean = center(test_values, Y=train_values)
 
@@ -97,3 +101,4 @@ def knn_3dplot(datalocation):
     fig = plt.show()
 
     return fig
+
