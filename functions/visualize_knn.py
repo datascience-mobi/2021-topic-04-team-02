@@ -90,7 +90,7 @@ def knn_3dplot(datalocation):
     z = mydata[:, 2]
 
     fig = plt.figure()
-    ax = axes3d
+    ax = fig.add_subplot(111, projection='3d')
     fig.add_axes(ax)
     ax.plot_trisurf(x, y, z, cmap="jet", linewidth=0.1)
     ax.set_xlabel("k observed neighbours")
