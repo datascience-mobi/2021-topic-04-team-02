@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def PCA_func(stan_x, X_mean, num_components, train_evs=None):
+def PCA(stan_x, X_mean, num_components, train_evs=None):
     """
 
     :param stan_x: standardized input values
