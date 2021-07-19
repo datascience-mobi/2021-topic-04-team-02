@@ -22,10 +22,10 @@ def components_3d(test_values_pca,labels,figure_title):
     mydata = test_values_pca
     x = mydata[:, 0]
     y = mydata[:, 1]
-    z = mydata[:, 3]
+    z = mydata[:, 2]
 
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(projection='3d')
     fig.add_axes(ax)
     plt.scatter(x, y, z,c=labels)
     ax.set_xlabel("PC 1")
