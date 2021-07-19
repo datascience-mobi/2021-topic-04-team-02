@@ -63,4 +63,3 @@ def rm_range(data, upper=256, lower=0):
     else:
         print("No values out of range.")
         return
-    return
