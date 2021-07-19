@@ -62,5 +62,6 @@ def components_reduced(data, train_evs, test_values):
         plt.show()
         if i == 2:
             break
+    print("Fig. 6: Comparison of the digit images before and after PCA")
 
     return

@@ -45,5 +45,6 @@ def compare_stan(data_location='data/train_points.p'):
         plt.colorbar()
 
     plt.show()
+    print("Fig. 2: comparison of digits after standardization")
 
     return
