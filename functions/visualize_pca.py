@@ -29,7 +29,7 @@ def components_2d(values_pca, labels):
     return plot2d.show()
 
 
-def inverse_pca(data, train_evs):
+def components_reduced(data, train_evs):
     data_reduced = np.dot(data - np.mean(train_evs), train_evs.T)
     data_reduced = data_reduced.reshape((28, 28))
     reduced_plot = plt.plot(data_reduced)
