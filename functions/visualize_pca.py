@@ -3,6 +3,12 @@ import plotly.express as px
 
 
 def components_3d(test_values_pca, test_labels):
+    """
+    generates 3D plot using the values after pca colored depending on their label
+    :param test_values_pca: input values
+    :param test_labels: input labels determining the color
+    :return: returns 3D plot
+    """
     plot3d = px.scatter_3d(test_values_pca, x=0, y=1, z=2, color=test_labels)
     plot3d.update_traces(marker=dict(size=3))
 
@@ -10,8 +16,12 @@ def components_3d(test_values_pca, test_labels):
 
 
 def components_2d(values_pca, labels):
+    """
+    generates 2D plot using the values after pca colored depending on their label
+    :param values_pca: input values
+    :param labels: input labels determining the color
+    :return: returns 2D plot
+    """
     plot2d = px.scatter(values_pca, x=0, y=1, color=labels)
 
     return plot2d.show()
-
-

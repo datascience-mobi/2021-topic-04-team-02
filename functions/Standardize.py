@@ -32,48 +32,48 @@ def cov_mod(m, n, rowvar=True):
     dtype = np.result_type(m, np.float64)
 
     # Transpose matrices so that entries of each variable (pixel position) are in rows instead of columns
-    X = np.array(m, dtype=dtype)
-    X2 = np.array(n, dtype=dtype)
+    x = np.array(m, dtype=dtype)
+    x2 = np.array(n, dtype=dtype)
     if rowvar:
-        X = X.T
-        X2 = X2.T
+        x = x.T
+        x2 = x2.T
 
     # Averages taken from second (training) array
-    avg = np.mean(X2, axis=1)
+    avg = np.mean(x2, axis=1)
     # axis=1 means mean calculated over rows
 
     # N-1 calculated:
-    N_1 = X.shape[1] - 1
+    n_1 = x.shape[1] - 1
 
     # Averages subtracted:
-    X = X - avg[:, None]
+    x = x - avg[:, None]
     # None adds another dimension so that subtraction is row-wise
 
     # Scalar product
-    X_T = X.T
-    c = np.dot(X, X_T)
+    x_t = x.T
+    c = np.dot(x, x_t)
 
     # Multiplied by 1/(N-1)
-    c = c * np.true_divide(1, N_1)
+    c = c * np.true_divide(1, n_1)
     # Squeeze removes unnecessary dimensions created by None
     return c.squeeze()
 
 
-def center(X, Y: np.ndarray = None, scale=False):
+def center(x, y: np.ndarray = None, scale=False):
     """
 
-    :param X: Array of data to be centered and scaled
-    :param Y: Array with which X is standardized
+    :param x: Array of data to be centered and scaled
+    :param y: Array with which X is standardized
     :param scale: If False (default) covariance matrix as output. If True then correlation matrix.
     :return: Covariance matrix or correlation matrix of X. And centered matrix: X-mean.
     """
-    if Y is None:
-        mean = np.mean(X, axis=0)
-        Y = X
+    if y is None:
+        mean = np.mean(x, axis=0)
+        y = x
     else:
-        mean = np.mean(Y, axis=0)
-    X_mean = X - mean
-    c_mat = cov_mod(X, Y)
+        mean = np.mean(y, axis=0)
+    x_mean = x - mean
+    c_mat = cov_mod(x, y)
     if scale:
         # correlation matrix calculated:
         # diagonal entries of covariance matrix are the variance
@@ -92,6 +92,5 @@ def center(X, Y: np.ndarray = None, scale=False):
         # Because matrix is symmetric corresponding rows also removed
         c_mat = c_mat[:, ~np.isnan(c_mat).any(axis=0)]
         # Amputated variables also removed from X-mean matrix
-        X_mean = X_mean[:, ~np.any(X_mean == 0, axis=0)]
-    return c_mat, X_mean
-
+        x_mean = x_mean[:, ~np.any(x_mean == 0, axis=0)]
+    return c_mat, x_mean

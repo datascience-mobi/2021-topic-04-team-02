@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from functions.Load_data import load_the_pickle
-from functions.PCA import PCA_func
+from functions.PCA import pca
 import functions.KNN_predict as knn
 from functions.Standardize import center
 from functions.Standardize import standardize
@@ -59,10 +59,10 @@ def call_me_maybe(images, x=12):
 
     # standardization and PCA:
     train_values_centered, train_mean = center(train_values)
-    train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
+    train_values_pca, train_evs = pca(train_values_centered, train_mean, number_of_pcs)
 
-    test_values_centered, test_mean = center(test_values, Y=train_values)
-    test_values_pca, _ = PCA_func(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
+    test_values_centered, test_mean = center(test_values, y=train_values)
+    test_values_pca, _ = pca(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
 
     for i in range(0, x):
         predicted_value = knn.weighted_knn("euclidean", trainvalues_pca=train_values_pca, x=test_values_pca[i, :], trainlabels=train_labels, k=k)

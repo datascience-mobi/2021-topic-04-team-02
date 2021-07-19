@@ -2,20 +2,20 @@ import seaborn
 import pandas as pd
 import numpy
 from functions.Load_data import load_the_pickle
-from functions.PCA import PCA
+from functions.PCA import pca
 import functions.KNN_predict as kNN
 from functions.Standardize import center
 import itertools as itertools
 import multiprocessing
 from scipy.spatial import KDTree
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 
 
-def knn_npca_test(traindataloaction, testdatalocation, kmin, kmax, pca_min, pca_max, new_data_location):
+def knn_npca_test(traindatalocation, testdatalocation, kmin, kmax, pca_min, pca_max, new_data_location):
     """
 
-    :param traindataloaction:
+    :param traindatalocation:
     :param testdatalocation:
     :param kmin:
     :param kmax:
@@ -25,18 +25,17 @@ def knn_npca_test(traindataloaction, testdatalocation, kmin, kmax, pca_min, pca_
     :return:
     """
 
-
-    train_labels, train_values = load_the_pickle(traindataloaction)
+    train_labels, train_values = load_the_pickle(traindatalocation)
     test_labels, test_values = load_the_pickle(testdatalocation)
-    train_values = standardize(train_values)
-    test_values = standardize(test_values)
+    train_values = center(train_values)
+    test_values = center(test_values)
     train_values_centered, train_mean = center(train_values)
-    test_values_centered, test_mean = center(test_values, Y=train_values)
+    test_values_centered, test_mean = center(test_values, y=train_values)
 
     tests = []
     for number_of_pcs in range(pca_min, pca_max):
-        train_values_pca, train_evs = PCA(train_values_centered, train_mean, number_of_pcs)
-        test_values_pca, _ = PCA(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
+        train_values_pca, train_evs = pca(train_values_centered, train_mean, number_of_pcs)
+        test_values_pca, _ = pca(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
         tree = KDTree(train_values_pca)
         for k in range(kmin, kmax):
             hit = 0
@@ -91,7 +90,7 @@ def knn_3dplot(datalocation):
     z = mydata[:, 2]
 
     fig = plt.figure()
-    ax = Axes3D(fig, auto_add_to_figure=False)
+    ax = axes3d(fig, auto_add_to_figure=False)
     fig.add_axes(ax)
     ax.plot_trisurf(x, y, z, cmap="jet", linewidth=0.1)
     ax.set_xlabel("k observed neighbours")
@@ -101,4 +100,3 @@ def knn_3dplot(datalocation):
     fig = plt.show()
 
     return fig
-
