@@ -2,7 +2,7 @@ import seaborn
 import pandas as pd
 import numpy
 from functions.Load_data import load_the_pickle
-from functions.PCA import PCA_func
+from functions.PCA import PCA
 import functions.KNN_predict as kNN
 from functions.Standardize import center
 import itertools as itertools
@@ -35,8 +35,8 @@ def knn_npca_test(traindataloaction, testdatalocation, kmin, kmax, pca_min, pca_
 
     tests = []
     for number_of_pcs in range(pca_min, pca_max):
-        train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
-        test_values_pca, _ = PCA_func(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
+        train_values_pca, train_evs = PCA(train_values_centered, train_mean, number_of_pcs)
+        test_values_pca, _ = PCA(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
         tree = KDTree(train_values_pca)
         for k in range(kmin, kmax):
             hit = 0
