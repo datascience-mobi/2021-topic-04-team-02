@@ -50,9 +50,17 @@ def components_2d(test_values_pca,labels, title, x_label, y_label):
     return fig
 
 
-def components_reduced(data, train_evs):
-    data_reduced = np.dot(data - np.mean(train_evs), train_evs.T)
-    data_reduced = data_reduced.reshape((28, 28))
-    reduced_plot = plt.plot(data_reduced)
+def components_reduced(data, train_evs, test_values):
+    for i,d in enumerate(data):
+        data_reduced = np.dot(d, train_evs.T) + train_evs.mean()
+        data_reduced = data_reduced.reshape((28, 28))
+        fig, ax = plt.subplots(1,2)
+        ax[0].set_title("Ground truth")
+        ax[1].set_title("Reconstructed")
+        ax[0].imshow(test_values[i].reshape((28,28)))
+        ax[1].imshow(data_reduced)
+        plt.show()
+        if i == 2:
+            break
 
-    return reduced_plot.show()
+    return
