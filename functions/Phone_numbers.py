@@ -46,7 +46,7 @@ def call_me_maybe(images, x=12):
     """
     phone_number = np.zeros(x, dtype=int)
     # number pcs and k
-    number_of_pcs = 51
+    number_of_pcs = 34
     k = 4
 
     # loading data:

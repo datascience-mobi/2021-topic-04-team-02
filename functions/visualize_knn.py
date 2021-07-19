@@ -2,7 +2,7 @@ import seaborn
 import pandas as pd
 import numpy
 from functions.Load_data import load_the_pickle
-from functions.PCA import PCA_func
+from functions.PCA import PCA
 import functions.KNN_predict as kNN
 from functions.Standardize import center
 import itertools as itertools
@@ -24,15 +24,19 @@ def knn_npca_test(traindataloaction, testdatalocation, kmin, kmax, pca_min, pca_
     :param new_data_location:
     :return:
     """
+
+
     train_labels, train_values = load_the_pickle(traindataloaction)
     test_labels, test_values = load_the_pickle(testdatalocation)
+    train_values = standardize(train_values)
+    test_values = standardize(test_values)
     train_values_centered, train_mean = center(train_values)
     test_values_centered, test_mean = center(test_values, Y=train_values)
 
     tests = []
     for number_of_pcs in range(pca_min, pca_max):
-        train_values_pca, train_evs = PCA_func(train_values_centered, train_mean, number_of_pcs)
-        test_values_pca, _ = PCA_func(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
+        train_values_pca, train_evs = PCA(train_values_centered, train_mean, number_of_pcs)
+        test_values_pca, _ = PCA(test_values_centered, test_mean, number_of_pcs, train_evs=train_evs)
         tree = KDTree(train_values_pca)
         for k in range(kmin, kmax):
             hit = 0
@@ -97,3 +101,4 @@ def knn_3dplot(datalocation):
     fig = plt.show()
 
     return fig
+
