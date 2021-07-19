@@ -57,7 +57,7 @@ def knn_npca_test(traindatalocation, testdatalocation, kmin, kmax, pca_min, pca_
     return data
 
 
-def knn_heatmap(datalocation, dropped_rows, dropped_columns):
+def knn_heatmap(datalocation, dropped_rows, dropped_columns,figure_title):
     """
 
     :param datalocation:
@@ -73,11 +73,12 @@ def knn_heatmap(datalocation, dropped_rows, dropped_columns):
     df.columns = ["k observed neighbours", "number of principle components", "Accuracy"]
     pivotted = df.pivot("k observed neighbours", "number of principle components", "Accuracy")
     pivotted = pd.DataFrame.drop(pivotted, index=dropped_rows, columns=dropped_columns)
+    ax = plt.axes()
+    ax.set_title(figure_title)
+    return seaborn.heatmap(pivotted,cbar_kws={"label": "Accuracy"})
 
-    return seaborn.heatmap(pivotted)
 
-
-def knn_3dplot(datalocation):
+def knn_3dplot(datalocation,figure_title):
     """
 
     :param datalocation:
@@ -97,6 +98,7 @@ def knn_3dplot(datalocation):
     ax.set_ylabel("number of principle components")
     ax.set_zlabel("number of hits")
     ax.set_title("Accuracy plot")
+    ax.set_title(figure_title)
     fig = plt.show()
 
     return fig
