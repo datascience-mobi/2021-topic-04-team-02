@@ -1,5 +1,7 @@
 # visualize pca data
 import plotly.express as px
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def components_3d(test_values_pca, test_labels):
@@ -25,3 +27,11 @@ def components_2d(values_pca, labels):
     plot2d = px.scatter(values_pca, x=0, y=1, color=labels)
 
     return plot2d.show()
+
+
+def inverse_pca(data, train_evs):
+    data_reduced = np.dot(data - np.mean(train_evs), train_evs.T)
+    data_reduced = data_reduced.reshape((28, 28))
+    reduced_plot = plt.plot(data_reduced)
+
+    return reduced_plot.show()
