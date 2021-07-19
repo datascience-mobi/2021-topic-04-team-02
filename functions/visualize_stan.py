@@ -29,7 +29,7 @@ def compare_stan(data_location='data/train_points.p'):
 
     :return:
     """
-    fig = plt.figure(figsize=(10,10))
+    fig = plt.figure(figsize=(10, 10))
     train_labels, train_values = load_the_pickle(data_location)
     for i in range(3):
         images = train_values[1:2, :]
@@ -46,4 +46,3 @@ def compare_stan(data_location='data/train_points.p'):
     plt.show()
 
     return
-
