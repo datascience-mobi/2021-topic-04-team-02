@@ -23,28 +23,39 @@ def components_3d(test_values_pca,labels,figure_title):
     x = mydata[:, 0]
     y = mydata[:, 1]
     z = mydata[:, 2]
-
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-    fig.add_axes(ax)
-    plt.scatter(x, y, z,c=labels)
+    fig, ax = plt.subplots()
+    scatter = ax.scatter(x, y, z, c=labels)
+    legend1 = ax.legend(*scatter.legend_elements(),
+                        loc="upper right", title="Legend")
+    ax.add_artist(legend1)
     ax.set_xlabel("PC 1")
     ax.set_ylabel("PC 2")
     ax.set_zlabel("PC 3")
     ax.set_title(figure_title)
-    fig = plt.show()
+    plt.show()
+    #fig = plt.figure()
+    #ax = fig.add_subplot(projection='3d')
+    #fig.add_axes(ax)
+    #plt.scatter(x, y, z, c=labels, label=labels)
+    #ax.set_xlabel("PC 1")
+    #ax.set_ylabel("PC 2")
+    #ax.set_zlabel("PC 3")
+    #ax.set_title(figure_title)
+    #ax.legend()
+    #fig = plt.show()
 
-    return fig
+    #return fig
 
 def components_2d(test_values_pca,labels, title, x_label, y_label):
     mydata = test_values_pca
     x = mydata[:, 0]
     y = mydata[:, 1]
 
-    plt.scatter(x, y, c=labels)
+    plt.scatter(x, y, c=labels, label=labels)
     plt.title(title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
+    plt.legend()
     fig = plt.show()
 
     return fig
