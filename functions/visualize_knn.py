@@ -8,21 +8,20 @@ from functions.Standardize import center
 import itertools as itertools
 import multiprocessing
 from scipy.spatial import KDTree
-from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 
 
 def knn_npca_test(traindatalocation, testdatalocation, kmin, kmax, pca_min, pca_max, new_data_location):
     """
 
-    :param traindatalocation:
-    :param testdatalocation:
-    :param kmin:
-    :param kmax:
-    :param pca_min:
-    :param pca_max:
-    :param new_data_location:
-    :return:
+    :param traindatalocation: location of training data
+    :param testdatalocation:   location of training data
+    :param kmin: minimum of k range
+    :param kmax: maximum of k range
+    :param pca_min: minimum of pc range
+    :param pca_max: maximum of pc range
+    :param new_data_location: storage path for generated data
+    :return: return list of list with combinations of k, n_pca and the corresponding accuracy
     """
 
     train_labels, train_values = load_the_pickle(traindatalocation)
@@ -57,13 +56,14 @@ def knn_npca_test(traindatalocation, testdatalocation, kmin, kmax, pca_min, pca_
     return data
 
 
-def knn_heatmap(datalocation, dropped_rows, dropped_columns,figure_title):
+def knn_heatmap(datalocation, dropped_rows, dropped_columns, figure_title):
     """
 
-    :param datalocation:
-    :param dropped_rows:
-    :param dropped_columns:
-    :return:
+    :param datalocation: data location for heatmap
+    :param dropped_rows: rows that should be dropped
+    :param dropped_columns: colums that should be dropped
+    :param figure_title: title for figure
+    :return: knn/n_pca/accuracy heatmap
     """
     mydata = numpy.load(datalocation)
     x = numpy.array(mydata[:, 1])
@@ -75,14 +75,15 @@ def knn_heatmap(datalocation, dropped_rows, dropped_columns,figure_title):
     pivotted = pd.DataFrame.drop(pivotted, index=dropped_rows, columns=dropped_columns)
     ax = plt.axes()
     ax.set_title(figure_title)
-    return seaborn.heatmap(pivotted,cbar_kws={"label": "Accuracy"})
+    return seaborn.heatmap(pivotted, cbar_kws={"label": "Accuracy"})
 
 
-def knn_3dplot(datalocation,figure_title):
+def knn_3dplot(datalocation, figure_title):
     """
 
-    :param datalocation:
-    :return:
+    :param datalocation: data location for 3d plot
+    :param figure_title: title for figure
+    :return: 3d plot of knn/n_pca
     """
 
     mydata = numpy.load(datalocation)
