@@ -27,9 +27,10 @@ def sample_digits(data_location='data/train_points.p'):
 def compare_stan(data_location='data/train_points.p'):
     """
 
-    :return:
+    :param data_location: location of data
+    :return: images to compare standardization methods
     """
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(20, 20))
     train_labels, train_values = load_the_pickle(data_location)
     for i in range(3):
         images = train_values[1:2, :]
